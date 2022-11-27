@@ -202,52 +202,6 @@ async function run(){
             res.send(result)
         })
 
-        // Get appointment options
-        app.get('/appointmentoptions', async(req, res)=>{
-            const date= req.query.date;
-            console.log(date);
-            const query = {};
-            const options =await appointmentOptionCollection.find(query).toArray();
-            
-            // get the all options on date
-            const bookingOptionQuery = { selectedDate : date}
-            const bookedOptions = await bookingsCollection.find(bookingOptionQuery).toArray();
-
-            // filter tha option name matched with booked
-            options.forEach(option=>{
-                const bookedSlot = bookedOptions.filter(book => book.treatmentName == option.name);
-                const specificSlots = bookedSlot.map(ob=>ob.slot);
-
-
-                const remainingSlots = option.slots.filter(slot=>!specificSlots.includes(slot));
-                option.slots= remainingSlots
-// console.log(remainingSlots);
-            })
-            res.send(options)
-        })
-        app.get('/booking/:id', async(req, res)=>{
-            const id = req.params.id;
-            const query = {
-                _id: ObjectId(id)
-            }
-            const result = await bookingsCollection.findOne(query);
-            res.send(result)
-        })
-
-        app.get('/bookings', verifyJWT, async(req, res)=>{
-            const email = req.query.email;
-            const decodedEmail = req.decoded.email;
-            if(email !==decodedEmail){
-                return res.status(403).send({message:'Forbidden Access'})
-            }
-            console.log(email);
-            const query = {
-                email: email
-            }
-            const bookinglist = await bookingsCollection.find(query).toArray();
-            // console.log(bookinglist);
-            res.send(bookinglist)
-        })
 
     // Payment
         app.post("/create-payment-intent", async (req, res) => {
