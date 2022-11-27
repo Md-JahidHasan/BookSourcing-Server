@@ -124,6 +124,16 @@ async function run(){
             res.send(sellers)
         })
 
+        //***************/ Load Seller /**************/
+        app.get('/allBuyers', async (req, res) => {
+            const query = {
+                seller: false
+            };
+            const buyers = await usersCollection.find(query).toArray();
+            console.log(buyers);
+            res.send(buyers)
+        })
+
         //***************/ Load specific user /*****************/
         
         // check admin
@@ -180,6 +190,15 @@ async function run(){
         app.post('/bookingOrder', async(req, res)=>{
             const order = req.body;
             const result = await bookingOrdersCollection.insertOne(order);
+            res.send(result)
+        })
+
+        app.get('/bookingOrder/:email', async(req, res)=>{
+            const email = req.params.email;
+            const filter = {
+                buyerEmail: email
+            }
+            const result = await bookingOrdersCollection.find(filter).toArray();
             res.send(result)
         })
 
