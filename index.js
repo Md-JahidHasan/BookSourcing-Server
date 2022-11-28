@@ -106,7 +106,7 @@ async function run(){
         app.get('/bookpost/seller/:email', async(req, res)=>{
             const email = req.params.email;
             const filter = {
-                sellerEmail: email
+                sellersEmail: email
             }
             const result = await booksPostedCollection.find(filter).toArray();
             res.send(result)
