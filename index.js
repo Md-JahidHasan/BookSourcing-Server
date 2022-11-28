@@ -60,7 +60,10 @@ async function run(){
             next()
         }
 
-        
+        // ==========================================
+        // Book selling Post Management **
+        // ==========================================
+
         // ***************** Get all Book Posts **************** //
         app.get('/bookPosts', async (req, res) => {
             
@@ -90,6 +93,13 @@ async function run(){
             }
             const categoryWiseBooks = await booksPostedCollection.find(filter).toArray();
             res.send(categoryWiseBooks)
+        })
+
+        // ***************** Get Category wise Books **************** //
+        app.post('/bookPost', async(req, res)=>{
+            const bookPost = req.body;
+            const result = await booksPostedCollection.insertOne(bookPost);
+            res.send(result)
         })
 
         
@@ -202,6 +212,8 @@ async function run(){
             res.send(result)
         })
 
+        // Get appointment options
+       
 
     // Payment
         app.post("/create-payment-intent", async (req, res) => {
@@ -239,43 +251,7 @@ async function run(){
     })
 
     
-    
 
-    // emporary update collection
-    // app.get('/addPrice', async(req, res)=>{
-    //     const filter = {};
-    //     const option= {
-    //         upsert: true
-    //     }
-    //     const updatedDoc = {
-    //         $set:{
-    //             price:99
-    //         }
-    //     }
-    //     const result = await appointmentOptionCollection.updateMany(filter, updatedDoc, option);
-    //     res.send(result)
-    // })
-
-
-    // add and get doctors
-    // app.post('/addDoctors',verifyJWT, verifyAdmin, async(req, res)=>{
-    //     const doctors = req.body;
-    //     const result = await doctorsCollection.insertOne(doctors);
-    //     res.send(result)
-    // })
-    // app.get('/doctors', async(req, res)=>{
-    //     const query = {};
-    //     const result= await doctorsCollection.find(query).toArray();
-    //     res.send(result);
-    // })
-    // app.delete('/doctors/:id', verifyJWT, verifyAdmin, async(req, res)=>{
-    //     const id = req.params.id;
-    //     const query = {
-    //         _id: ObjectId(id)
-    //     }
-    //     const result = await doctorsCollection.deleteOne(query);
-    //     res.send(result)
-    // })
 
     }
     finally{
