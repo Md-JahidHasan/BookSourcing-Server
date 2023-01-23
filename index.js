@@ -164,6 +164,18 @@ async function run(){
             res.send({ isAdmin: result?.role === 'admin' })
         })
 
+        app.delete('/deleteUser/:email', async(req, res) =>{
+            const userEmail = req.params.email;
+            // console.log(userEmail);
+            const query = {
+                email: userEmail
+            };
+            // console.log(query);
+            const result = await usersCollection.deleteOne(query);
+            res.send(result)
+        })
+
+
         // check seller
         app.get('/allusers/seller/:email', async (req, res) => {
             const email = req.params.email;
@@ -257,10 +269,6 @@ async function run(){
         }
         res.status(403).send({accessToken:''})
     })
-
-    
-
-
     }
     finally{
 
